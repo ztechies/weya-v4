@@ -57,7 +57,7 @@ const Reg = () => {
             } else {
                 if (result.token) {
                     toast("Verification link send to your email, please check",{position: "top-center"})
-                    setInterval(() => { router.push('/login'); }, 2000)
+                    setTimeout(() => { router.push('/login'); }, 2000)
                     reset();
                 }
             }
