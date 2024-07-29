@@ -5,6 +5,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import { isAuthenticated } from '@/app/lib/Auth';
 import Header from '@/components/Navbars/Header';
 import SideNavbar from '@/components/Navbars/SideNavBar';
+import GlobalLoader from '@/components/Loaders/GlobalLoader';
 
 interface BotProps {
     params: {
@@ -31,15 +32,6 @@ const Bot: FC<BotProps> = ({ params }) => {
         setIsSidebarOpen(!isSidebarOpen);
     };
 
-    const componentMap: Record<string, FC | ((props: { botNumber: string }) => JSX.Element)> = {
-        "first": Conversation,
-        "second": Conversation,
-        "third": Conversation,
-        "fourth": Conversation,
-    };
-
-    const ComponentToRender = componentMap[params.name] || (() => <div>Bot not found</div>);
-
     const handleRouteChange = (e: React.MouseEvent<HTMLButtonElement>) => {
         const newPath = e.currentTarget.value;
         if (currentPath !== newPath) {
@@ -51,13 +43,15 @@ const Bot: FC<BotProps> = ({ params }) => {
     return (
         <div className="h-screen flex flex-col">
             <Header isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
-            <SideNavbar
-                ComponentToRender={ComponentToRender}
-                isSidebarOpen={isSidebarOpen}
-                handleRouteChange={handleRouteChange}
-                isLoading={isLoading}
-                selectedBot={selectedBot}
-            />
+            <div className="flex flex-grow">
+                <SideNavbar
+                    isSidebarOpen={isSidebarOpen}
+                    handleRouteChange={handleRouteChange}
+                />
+                <main className={`flex-grow flex justify-center items-center bg-black w-96 p-5 overflow-y-auto ${isSidebarOpen ? "md:ml-64" : "ml-0"} transition-all duration-300`}>
+                    {isLoading ? <GlobalLoader /> : <Conversation botNumber={'second'} />}
+                </main>
+            </div>
         </div>
     );
 }

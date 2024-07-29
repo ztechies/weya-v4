@@ -23,7 +23,7 @@ const Home = () => {
 
   const handleExploreClick = () => {
     setLoading(true);
-    router.push('/chat');
+    router.push('/chat/first');
   };
 
   const handleLogout = () => {

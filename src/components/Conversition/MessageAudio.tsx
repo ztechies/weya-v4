@@ -61,11 +61,11 @@ const MessageAudio = ({
    */
   if (playing) {
     return (
-      <a href="#" onClick={() => pause!()}>
+      <a onClick={() => pause!()}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"
-          className={`w-6 h-6 fill-white hover:fill-[#149AFB] ${className}`}
+          className={`w-6 h-6 fill-white hover:fill-[#345830] ${className}`}
           {...rest}
         >
           <path
@@ -87,11 +87,11 @@ const MessageAudio = ({
    */
   if (!playing) {
     return (
-      <a href="#" onClick={() => play()}>
+      <a onClick={() => play()}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"
-          className={`w-6 h-6 fill-white hover:fill-[#149AFB] ${className}`}
+          className={`w-6 h-6 fill-white hover:fill-[#345830] ${className}`}
           {...rest}
         >
           <path

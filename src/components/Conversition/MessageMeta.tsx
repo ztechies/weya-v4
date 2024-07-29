@@ -9,7 +9,7 @@ import { BoltIcon } from "../../components/icons/BoltIcon";
 const TTFB = () => (
   <Tooltip
     showArrow
-    className="p-5 max-w-md"
+    className="p-5 max-w-md text-white bg-gradient-to-tl from-[#345830] to-black rounded-lg"
     content="Time to first byte (TTFB) is the time it takes from initiating an API request to receiving the first byte of audio from the response."
   >
     <span className="underline decoration-dotted">Time to first-byte</span>

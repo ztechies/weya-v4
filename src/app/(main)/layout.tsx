@@ -2,13 +2,6 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
-import { DeepgramContextProvider } from "../../context/Deepgram";
-import { MessageMetadataContextProvider } from "../../context/MessageMetadata";
-import { MicrophoneContextProvider } from "../../context/Microphone";
-import { AudioStoreContextProvider } from "../../context/AudioStore";
-import { ToastContextProvider } from "../../context/Toast";
-import { NowPlayingContextProvider } from "react-nowplaying";
-// import { GoogleTagManager } from "@next/third-parties/google";
 
 
 const inter = Inter({ subsets: ["latin"] });
@@ -26,21 +19,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <div style={{height:"100vh"}}>
-          {/* <SideBar/> */}
-        <ToastContextProvider>
-          <MicrophoneContextProvider>
-            <AudioStoreContextProvider>
-              <NowPlayingContextProvider>
-                <MessageMetadataContextProvider>
-                  <DeepgramContextProvider>{children}</DeepgramContextProvider>
-                </MessageMetadataContextProvider>
-              </NowPlayingContextProvider>
-            </AudioStoreContextProvider>
-          </MicrophoneContextProvider>
-        </ToastContextProvider>
+        <div style={{ height: "100vh" }}>
+          {children}
         </div>
-        {/* <GoogleTagManager gtmId="GTM-5R73N627" /> */}
         <Script
           id="github-buttons"
           async

@@ -28,17 +28,18 @@ import { useDeepgram } from "../../context/Deepgram";
 import { useMessageData } from "../../context/MessageMetadata";
 import { useMicrophone } from "../../context/Microphone";
 import { useAudioStore } from "../../context/AudioStore";
+import { usePathname } from "next/navigation";
 
 /**
  * Conversation element that contains the conversational AI app.
  * @returns {JSX.Element}
  */
-export default function Conversation(props: { botNumber: string }): JSX.Element {
+export default function Conversation({ botNumber }: { botNumber: string }): JSX.Element {
   /**
    * Custom context providers
    */
 
-  const selectedBot = (props.botNumber).toUpperCase();
+  const selectedBot = (botNumber).toUpperCase();
 
   let speakApi;
   switch (selectedBot) {
@@ -48,14 +49,6 @@ export default function Conversation(props: { botNumber: string }): JSX.Element 
 
     case "SECOND":
       speakApi = process.env.NEXT_PUBLIC_SECOND
-      break;
-
-    case "THIRD":
-      speakApi = process.env.NEXT_PUBLIC_THIRD
-      break;
-
-    case "FOUR":
-      speakApi = process.env.NEXT_PUBLIC_FOUR
       break;
 
     default:
@@ -104,7 +97,7 @@ export default function Conversation(props: { botNumber: string }): JSX.Element 
       const start = Date.now();
       const model = ttsOptions?.model ?? "aura-asteria-en";
 
-      const res = await fetch(`/api/speak/${speakApi}/?model=${model}`, {
+      const res = await fetch(`/api/speak/${speakApi}?model=${model}`, {
         cache: "no-store",
         method: "POST",
         body: JSON.stringify(message),
@@ -177,6 +170,7 @@ export default function Conversation(props: { botNumber: string }): JSX.Element 
     input,
     handleSubmit,
     isLoading: llmLoading,
+    setMessages
   } = useChat({
     id: "aura",
     api: "/api/brain",
@@ -185,6 +179,9 @@ export default function Conversation(props: { botNumber: string }): JSX.Element 
     onResponse,
   });
 
+  useEffect(() => {
+      setMessages([systemMessage, greetingMessage]);
+  }, [botNumber]);
   const [currentUtterance, setCurrentUtterance] = useState<string>();
   const [failsafeTimeout, setFailsafeTimeout] = useState<NodeJS.Timeout>();
   const [failsafeTriggered, setFailsafeTriggered] = useState<boolean>(false);
