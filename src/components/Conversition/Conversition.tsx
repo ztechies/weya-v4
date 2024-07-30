@@ -51,6 +51,10 @@ export default function Conversation({ botNumber }: { botNumber: string }): JSX.
       speakApi = process.env.NEXT_PUBLIC_SECOND
       break;
 
+    case "THIRD":
+      speakApi = process.env.NEXT_PUBLIC_THIRD
+      break;
+
     default:
       speakApi = undefined
       break;

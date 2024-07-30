@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { NowPlayingContextProvider } from "react-nowplaying";
-import { ToastContextProvider } from "@/context/Toast";
 import { MicrophoneContextProvider } from "@/context/Microphone";
 import { AudioStoreContextProvider } from "@/context/AudioStore";
 import { MessageMetadataContextProvider } from "@/context/MessageMetadata";
@@ -18,17 +17,17 @@ export default function Layout({
 }>) {
     return (
         <div style={{ height: "100vh" }}>
-            <ToastContextProvider>
-                <MicrophoneContextProvider>
-                    <AudioStoreContextProvider>
-                        <NowPlayingContextProvider>
-                            <MessageMetadataContextProvider>
-                                <DeepgramContextProvider>{children}</DeepgramContextProvider>
-                            </MessageMetadataContextProvider>
-                        </NowPlayingContextProvider>
-                    </AudioStoreContextProvider>
-                </MicrophoneContextProvider>
-            </ToastContextProvider>
+            <MicrophoneContextProvider>
+                <AudioStoreContextProvider>
+                    <NowPlayingContextProvider>
+                        <MessageMetadataContextProvider>
+                            <DeepgramContextProvider>
+                                {children}
+                            </DeepgramContextProvider>
+                        </MessageMetadataContextProvider>
+                    </NowPlayingContextProvider>
+                </AudioStoreContextProvider>
+            </MicrophoneContextProvider>
         </div>
     );
 }

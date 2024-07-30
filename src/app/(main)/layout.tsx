@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
+import { ToastContextProvider } from "@/context/Toast";
 
 
 const inter = Inter({ subsets: ["latin"] });
@@ -20,7 +21,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <div style={{ height: "100vh" }}>
-          {children}
+          <ToastContextProvider>
+            {children}
+          </ToastContextProvider>
         </div>
         <Script
           id="github-buttons"

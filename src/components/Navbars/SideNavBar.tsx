@@ -16,7 +16,7 @@ const SideNavbar = ({
       style={{ minWidth: isSidebarOpen ? "16rem" : "4rem" }} // Adjust the minWidth based on your design
     >
       <ul className="flex flex-col text-center text-lg gap-5 w-full flex-wrap">
-        {["first", "second"].map((bot) => (
+        {["first", "second", "third"].map((bot) => (
           <button
             key={bot}
             value={`/chat/${bot}`}
