@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 import { ToastContextProvider } from "@/context/Toast";
+import { AudioStoreContextProvider } from "@/context/AudioStore";
 
 
 const inter = Inter({ subsets: ["latin"] });
@@ -22,7 +23,9 @@ export default function RootLayout({
       <body className={inter.className}>
         <div style={{ height: "100vh" }}>
           <ToastContextProvider>
-            {children}
+            <AudioStoreContextProvider>
+              {children}
+            </AudioStoreContextProvider>
           </ToastContextProvider>
         </div>
         <Script
