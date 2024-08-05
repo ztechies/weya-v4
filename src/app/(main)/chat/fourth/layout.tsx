@@ -20,7 +20,9 @@ export default function Layout({
             <MicrophoneContextProvider>
                 <NowPlayingContextProvider>
                     <MessageMetadataContextProvider>
-                        <DeepgramContextProvider>{children}</DeepgramContextProvider>
+                        <DeepgramContextProvider>
+                            {children}
+                        </DeepgramContextProvider>
                     </MessageMetadataContextProvider>
                 </NowPlayingContextProvider>
             </MicrophoneContextProvider>

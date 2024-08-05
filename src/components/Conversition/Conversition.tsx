@@ -28,7 +28,6 @@ import { useDeepgram } from "../../context/Deepgram";
 import { useMessageData } from "../../context/MessageMetadata";
 import { useMicrophone } from "../../context/Microphone";
 import { useAudioStore } from "../../context/AudioStore";
-import { usePathname } from "next/navigation";
 
 /**
  * Conversation element that contains the conversational AI app.
@@ -90,13 +89,11 @@ export default function Conversation({ botNumber }: { botNumber: string }): JSX.
    * Refs
    */
   const messageMarker = useRef<null | HTMLDivElement>(null);
-
   /**
    * State
    */
   const [initialLoad, setInitialLoad] = useState(true);
   const [isProcessing, setProcessing] = useState(false);
-
   /**
    * Request audio from API
    */
@@ -104,17 +101,13 @@ export default function Conversation({ botNumber }: { botNumber: string }): JSX.
     async (message: Message) => {
       const start = Date.now();
       const model = ttsOptions?.model ?? "aura-asteria-en";
-
       const res = await fetch(`/api/speak/${speakApi}?model=${model}`, {
         cache: "no-store",
         method: "POST",
         body: JSON.stringify(message),
       });
-
       const headers = res.headers;
-
       const blob = await res.blob();
-
       startAudio(blob, "audio/mp3", message.id).then(() => {
         addAudio({
           id: message.id,
@@ -180,7 +173,7 @@ export default function Conversation({ botNumber }: { botNumber: string }): JSX.
     isLoading: llmLoading,
     setMessages
   } = useChat({
-    id: "aura",
+    id: botNumber,
     api: "/api/brain",
     initialMessages: [systemMessage, greetingMessage],
     onFinish,
@@ -188,7 +181,11 @@ export default function Conversation({ botNumber }: { botNumber: string }): JSX.
   });
 
   useEffect(() => {
-      setMessages([systemMessage, greetingMessage]);
+    if (chatMessages.length > 2) {
+      setMessages([...chatMessages]);
+    } else {
+      setMessages([systemMessage, greetingMessage])
+    }
   }, [botNumber]);
   const [currentUtterance, setCurrentUtterance] = useState<string>();
   const [failsafeTimeout, setFailsafeTimeout] = useState<NodeJS.Timeout>();
@@ -276,25 +273,23 @@ export default function Conversation({ botNumber }: { botNumber: string }): JSX.
   /**
    * Contextual functions
    */
-  const requestWelcomeAudio = useCallback(async () => {
+  const requestWelcomeAudio = async () => {
     requestTtsAudio(greetingMessage);
-  }, [greetingMessage, requestTtsAudio]);
+  };
 
   const startConversation = useCallback(() => {
     if (!initialLoad) return;
-
     setInitialLoad(false);
-
     // add a stub message data with no latency
-    const welcomeMetadata: MessageMetadata = {
-      ...greetingMessage,
-      ttsModel: ttsOptions?.model,
-    };
-
-    addMessageData(welcomeMetadata);
-
-    // get welcome audio
-    requestWelcomeAudio();
+    if (chatMessages.length <= 2) {
+      const welcomeMetadata: MessageMetadata = {
+        ...greetingMessage,
+        ttsModel: ttsOptions?.model,
+      };
+      addMessageData(welcomeMetadata);
+      // get welcome audio
+      requestWelcomeAudio();
+    }
   }, [
     addMessageData,
     greetingMessage,
@@ -477,9 +472,8 @@ export default function Conversation({ botNumber }: { botNumber: string }): JSX.
             <div className="flex flex-col flex-auto h-full">
               <div className="flex flex-col justify-between h-full">
                 <div
-                  className={`flex flex-col h-full overflow-hidden ${
-                    initialLoad ? "justify-center" : "justify-end"
-                  }`}
+                  className={`flex flex-col h-full overflow-hidden ${initialLoad ? "justify-center" : "justify-end"
+                    }`}
                 >
                   <div className="grid grid-cols-12 overflow-x-auto gap-y-2">
                     {initialLoad ? (

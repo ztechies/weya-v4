@@ -1,9 +1,9 @@
-import { AgentAvatar } from "./AgentAvatar";
 import { Message } from "ai/react";
 import { MessageAudio } from "./MessageAudio";
 import { MessageHeader } from "./MessageHeader";
 import { MessageMeta } from "./MessageMeta";
-import { TextContent } from "./TextContext"; 
+import { TextContent } from "./TextContext";
+import { UserAvatar } from "./UserAvatar";
 
 export const LeftBubble = ({ message }: { message: Message }) => {
   return (
@@ -12,7 +12,9 @@ export const LeftBubble = ({ message }: { message: Message }) => {
         <div className="flex items-start gap-2 flex-col md:flex-row">
           <div className="flex items-start gap-2 flex-col md:flex-row max-w-full md:max-w-none">
             <div className="min-w-12 text-white shrink-0">
-              <AgentAvatar message={message} />
+              <div className="self-end md:self-start h-8 w-8 text-white shrink-0 pt-1 mt-1 rounded-full bg-black border border-zinc-300 overflow-hidden">
+                <UserAvatar />
+              </div>
             </div>
             <div className="glass flex p-4 rounded-e-xl rounded-es-xl max-w-full md:max-w-none bg-[#345830]">
               <div className="flex flex-col overflow-hidden pre-overflow-y-auto">
